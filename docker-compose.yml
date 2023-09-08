@@ -1,0 +1,72 @@
+version: "3.7"
+services:
+  mysql:
+    container_name: poc_mysql
+    image: mysql:latest
+    environment:
+      MYSQL_USER: poc
+      MYSQL_PASSWORD: poc
+      MYSQL_ROOT_PASSWORD: poc
+      MYSQL_DATABASE: poc
+    command: ["--log_bin_trust_function_creators=1"]
+    ports:
+      - 3307:3306
+    expose:
+      - 3306
+    networks:
+      - poc_network
+  postgres:
+    container_name: poc_postgres
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: poc
+      POSTGRES_PASSWORD: poc
+      POSTGRES_DB: poc
+    ports:
+      - 5432:5432
+    expose:
+      - 5432
+    networks:
+      - poc_network
+  redis:
+    container_name: poc_redis
+    image: redis:latest
+    ports:
+      - 6379:6379
+    expose:
+      - 6379
+    networks:
+      - poc_network
+  jaeger:
+    container_name: poc_jaeger
+    image: jaegertracing/all-in-one:1.39
+    restart: always
+    ports:
+      - 6831:6831/udp
+      - 6832:6832/udp
+      - 16686:16686
+      - 14268:14268
+    networks:
+      - poc_network
+  poc:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    container_name: poc_app
+    ports:
+      - 8000:8000
+      - 2200:22
+      - 11211:11211
+    depends_on:
+      - mysql
+      - postgres
+      - redis
+      - jaeger
+    networks:
+      - poc_network
+    volumes:
+      - ./.env-example:/.env:ro
+    restart: on-failure
+
+networks:
+  poc_network:

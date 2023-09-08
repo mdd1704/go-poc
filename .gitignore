@@ -1,0 +1,5 @@
+.idea/
+.vscode/*
+.misc/
+go.sum
+.env

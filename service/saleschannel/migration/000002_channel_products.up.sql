@@ -1,0 +1,11 @@
+CREATE TABLE IF NOT EXISTS channel_products
+(
+    id CHAR(36) primary key NOT NULL,
+    channel_id CHAR(36) NOT NULL,
+    sku VARCHAR(100) NOT NULL,
+    name VARCHAR(100) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    UNIQUE (channel_id, sku),
+    FOREIGN KEY (channel_id) REFERENCES channels(id) ON DELETE CASCADE ON UPDATE RESTRICT
+);

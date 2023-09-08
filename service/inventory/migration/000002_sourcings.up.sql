@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS sourcings
+(
+    id CHAR(36) primary key NOT NULL,
+    sku VARCHAR(100) UNIQUE NOT NULL,
+    qty_total INT NOT NULL,
+    qty_reserved INT NOT NULL,
+    qty_saleable INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);
